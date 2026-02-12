@@ -1,4 +1,149 @@
-<h1 style="font-size:30px; text-align:center; color: purple;">Please choose a store</h1>
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .image-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .image-container {
+      position: relative;
+      width: 150px;
+    }
+    .image-container img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .caption-input {
+      width: 100%;
+      margin: 5px 0;
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .remove-image {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: #fff;
+      border-radius: 50%;
+      padding: 2px 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
 
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Login</h1>
+    <form id="login-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username"><br><br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password"><br><br>
+      <input type="submit" value="Login">
+    </form>
+    <p id="error-message"></p>
+  </div>
+  
+<div class="button-container" style="display: none;">
+<input type="file" id="image-input" accept="image/*" multiple>
+<button onclick="addImages()">Add Images</button>
+<button onclick="saveImages()">Save Images</button>
+<div class="image-gallery" id="image-gallery"></div>
+<div id="saved-images"></div>
+</div>
 
-<body style="margin: 0; background: url('Screenshot_20260201_083016_WhatsApp.jpg') center/cover no-repeat; height: 100vh;">
+<script>
+const loginForm = document.getElementById('login-form');
+const errorMessage = document.getElementById('error-message');
+const buttonContainer = document.querySelector('.button-container');
+const buttons = document.querySelectorAll('button');
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  if (username === 'Tatenda' && password === 'mapiye') {
+    // Login successful, enable buttons
+    buttonContainer.style.display = 'block';
+    buttons.forEach((button) => {
+      button.disabled = false;
+    });
+  } else {
+    errorMessage.textContent = 'Invalid username or password';
+  }
+});
+
+let images = [];
+
+function addImages() {
+  const input = document.getElementById('image-input');
+  const gallery = document.getElementById('image-gallery');
+  
+  Array.from(input.files).forEach((file) => {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const container = document.createElement('div');
+      container.className = 'image-container';
+      
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      
+      const caption = document.createElement('input');
+      caption.type = 'text';
+      caption.className = 'caption-input';
+      caption.placeholder = 'Add a caption...';
+      
+      const removeBtn = document.createElement('span');
+      removeBtn.className = 'remove-image';
+      removeBtn.innerHTML = '&times;';
+      removeBtn.onclick = () => container.remove();
+      
+      container.appendChild(img);
+      container.appendChild(caption);
+      container.appendChild(removeBtn);
+      gallery.appendChild(container);
+      
+      images.push({ src: e.target.result, caption: '' });
+      
+      caption.oninput = () => {
+        images[images.length - 1].caption = caption.value;
+      };
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function saveImages() {
+  const savedImages = document.getElementById('saved-images');
+  savedImages.innerHTML = '';
+  
+  images.forEach((image) => {
+    const container = document.createElement('div');
+    container.className = 'image-container';
+    
+    const img = document.createElement('img');
+    img.src = image.src;
+    
+    const caption = document.createElement('p');
+    caption.textContent = image.caption;
+    
+    container.appendChild(img);
+    container.appendChild(caption);
+    savedImages.appendChild(container);
+  });
+}
+</script>
+
+</body>
+</html>

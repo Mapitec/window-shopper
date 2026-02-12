@@ -1,3 +1,5 @@
+<body style="margin: 0; background: url('Screenshot_20260201_083016_WhatsApp.jpg') center/cover no-repeat; height: 100vh;">
+<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,14 +39,52 @@
 </head>
 <body>
 
-<h2>Add Images with Captions</h2>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Login</h1>
+    <form id="login-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username"><br><br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password"><br><br>
+      <input type="submit" value="Login">
+    </form>
+    <p id="error-message"></p>
+  </div>
+  
+<div class="button-container" style="display: none;">
 <input type="file" id="image-input" accept="image/*" multiple>
 <button onclick="addImages()">Add Images</button>
 <button onclick="saveImages()">Save Images</button>
 <div class="image-gallery" id="image-gallery"></div>
 <div id="saved-images"></div>
+</div>
 
 <script>
+const loginForm = document.getElementById('login-form');
+const errorMessage = document.getElementById('error-message');
+const buttonContainer = document.querySelector('.button-container');
+const buttons = document.querySelectorAll('button');
+
+loginForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  if (username === 'Tatenda' && password === 'mapiye') {
+    // Login successful, enable buttons
+    buttonContainer.style.display = 'block';
+    buttons.forEach((button) => {
+      button.disabled = false;
+    });
+  } else {
+    errorMessage.textContent = 'Invalid username or password';
+  }
+});
+
 let images = [];
 
 function addImages() {
@@ -108,4 +148,3 @@ function saveImages() {
 
 </body>
 </html>
-
